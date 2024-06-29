@@ -4,8 +4,9 @@ import java.util.Scanner;
 
 
 public class Main {
+    static int a = 1;
     public static Scanner scanner; // Note: Do not change this line.
-    public static void manageGrades() {
+    public static void manageGrades(String[][] matrix, String [] array) {
 
         boolean nonStop = true;
         while (nonStop) {
@@ -20,7 +21,7 @@ public class Main {
 
 
             if (option == 1)
-                addNewStudent();
+                addNewStudent(matrix , array);
             else if (option == 2)
                 displayAllStudent();
             else if (option == 3)
@@ -36,15 +37,36 @@ public class Main {
         }
     }
 
-    public  void  addNewStudent()
-    {
+    public  void  addNewStudent(String[][] matrix, String [] array) {
         System.out.println("Enter student name:");
-        String  nameStudent = scanner.nextLine();
-
-
+        String nameStudent = scanner.nextLine();
+        array[a] = nameStudent;
         System.out.println("Enter grades: ");
+        String input = scanner.nextLine().trim();
+        String[] grades= input.split("\\s+");
+        boolean check = true;
+        for (int i = 0 ; i < grades.length ; i++ )
+        {
+            matrix[a][i] = grades[i];
+            if (Double.parseDouble(matrix[a][i]) < 0 || Double.parseDouble(matrix[a][i]) > 100  )
+                check = false;
+        }
+        if (a > 99 ) {
+            System.out.println("Student limit reached.");
+            return ;
+        }
+
+        if (!check)
+        {
+            System.out.println(" Invalid grades.");
+            return;
+        }
+        System.out.printf ("%s added successfully!", array[a]);
+        a++;
 
     }
+
+
 
 
     public static void main(String[] args) throws IOException {
@@ -52,11 +74,13 @@ public class Main {
         scanner = new Scanner(new File(path));
         int numberOfTests = scanner.nextInt();
         scanner.nextLine();
+        String[][] matrix = new double[100][];
+        String [] array = new String [100];
 
         for (int i = 1; i <= numberOfTests; i++) {
             System.out.println("Test number " + i + " starts.");
             try {
-                manageGrades();
+                manageGrades(matrix,array);
             } catch(Exception e){
                 System.out.println("Exception " + e);
             }
